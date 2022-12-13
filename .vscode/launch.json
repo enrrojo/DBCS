@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RestApplication<REST>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.uva.REST.RestApplication",
+            "projectName": "REST",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "name": "Docker Node.js Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "platform": "node",
+            "node": {
+                "package": "${workspaceFolder}/Angular/package.json",
+                "localRoot": "${workspaceFolder}/Angular"
+            }
+        }
+    ]
+}
