@@ -1,0 +1,69 @@
+version: '3.4'
+
+volumes:
+  kong_data: {}
+  users_data: {}
+
+networks: #Red interna para comunicar los servicios
+  kong-net:
+
+services:
+
+  angular:
+    image: angular-users
+    build:
+      context: Angular
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - 4200:80
+    networks:
+      - kong-net
+
+  REST:
+    image: rest-users
+    build:
+      context: REST
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks: # Networks to join
+      - kong-net
+    environment:
+      SPRING_DATASOURCE_URL:
+        jdbc:mysql://database-users:3306/GestionUsuarios?createDatabaseIfNotExist=true
+    depends_on:
+      - database-users
+  
+  REST_Autentification:
+    image: rest_autentification-users
+    build:
+      context: REST_Autentification
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    networks: # Networks to join
+      - kong-net
+    depends_on:
+      - REST
+
+  database-users:
+    image: mysql 
+    hostname: database-users
+    cap_add:
+      - SYS_NICE
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    networks:
+      - kong-net
+    volumes:
+      - users_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password11_
+      MYSQL_DATABASE: GestionUsuarios
+      MYSQL_ROOT_HOST: '%'

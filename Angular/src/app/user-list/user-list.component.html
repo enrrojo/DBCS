@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <span class="alert" *ngIf="mostrarMensaje">{{mensaje}}</span>
+    <div class="container-fluid">
+        <form class="form-inline">
+            <fieldset class="form-group col-sm-12"></fieldset>
+            <fieldset class="form-group col-sm-1">
+                <a class="btn btn-primary" [routerLink]="['/users/new']">+</a>
+            </fieldset>
+            <fieldset class="form-group col-sm-2">
+                <a class="btn btn-primary" (click)="getEnabled(false)">Show disabled</a>
+            </fieldset>
+            <fieldset class="form-group col-sm-2">
+                <a class="btn btn-primary" (click)="getEnabled(true)">Show enabled</a>
+            </fieldset>
+            <fieldset class="form-group col-sm-2">
+                <a class="btn btn-danger" (click)="setEnabled()">Make enabled</a>
+            </fieldset>
+            <fieldset class="form-group col-sm-2">
+                <a class="btn btn-danger" (click)="setDisabled()">Make disabled</a>
+            </fieldset>
+        </form>
+        <div class="search-container">
+            <form (ngSubmit)="getUser()" #userForm="ngForm">
+              <input type="string" placeholder="User id..." required
+              [(ngModel)]="idSearch" name="idSearch"  min="1" max="500">
+              <button type="submit" ><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class= "form-group col-sm-11"> </div>
+        <div class = "form-group col-sm-2">
+            <a>Name: {{name}}</a>
+        </div>
+        <div class = "form-group col-sm-3">
+            <a>Email: {{email}}</a>
+        </div>
+        <div class = "form-group col-sm-5">
+            <a>Role: {{role}}</a>
+        </div>
+        <div class = "form-group col-sm-1">
+            <button type="button" class="btn btn-secondary" (click)="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <fieldset class="form-group col-sm-12"></fieldset>
+                </form>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Email</th>
+                            <th>Enabled</th>
+                            <th>Role</th>
+                            <th>Created at</th>
+                            <th>Updated At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of Users">
+                            <td>
+                                <form>
+                                    <div>
+                                      <input type="checkbox" [value]="user.id" (change)="addUserToBox(user.id)"/>
+                                    </div>
+                                </form>
+                            </td>
+                            <td><i>{{user.id}}</i></td>
+                            <td><i>{{user.name}}</i></td>
+                            <td><i>{{user.firstName}}</i></td>
+                            <td><i>{{user.lastName}}</i></td>
+                            <td><i>{{user.email}}</i></td>
+                            <td><i>{{user.enabled}}</i></td>
+                            <td><i>{{user.role}}</i></td>
+                            <td><i>{{user.createdAt}}</i></td>
+                            <td><i>{{user.updatedAt}}</i></td>
+                            <td><a class="btn btn-info" [routerLink]= "['/users', user.id, 'edit']" > Edit </a> </td>
+                            <td><a class="btn btn-danger" (click)="delete(user.id)">-</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

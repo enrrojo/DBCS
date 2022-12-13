@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <div class="row">
+      <div class="col-sm-12">
+        <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+          <fieldset class="form-group">
+            <div class="col-sm-3">
+              <label class="control-label" for="name">Name</label>
+              <input type="text" class="form-control" [disabled]="id ? true : false"
+              [required]="id ? false : true"
+              [(ngModel)]="user.name" name="name">
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-3">
+              <label class="control-label" for="firstName">First name</label>
+              <input type="text" class="form-control" required
+              [(ngModel)]="user.firstName" name="firstName">
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-3">
+              <label class="control-label" for="lastName">Last name</label>
+              <input type="text" class="form-control" required
+              [(ngModel)]="user.lastName" name="lastName">
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-3">
+              <label class="control-label" for="email">Email</label>
+              <input type="text" class="form-control" required
+              [(ngModel)]="user.email" name="email">
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-6">
+              <label class="control-label" for="password">Password</label>
+              <input type="text" class="form-control" required
+              [(ngModel)]="user.password" name="password">
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-6">
+              <label class="control-label" for="enabled">Enabled</label>
+              <select name="enabled" [(ngModel)]="user.enabled" [disabled]="id ? true : false"
+              [required]="id ? false : true">
+                <option *ngFor="let item of listEnable" [ngValue]="item" >
+                  {{item}}</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-6">
+              <label class="control-label" for="role">Role</label>
+              <select name="role" [(ngModel)]="user.role" [disabled]="id ? true : false"
+              [required]="id ? false : true">
+                <option *ngFor="let item of listRole" [ngValue]="item">
+                  {{[item]}}</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-sm-offset-2 col-sm-12">
+              <button type="submit" class="btn btn-primary" [disabled]="!userForm.form.valid">
+              Submit </button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+</body>
+</html>
