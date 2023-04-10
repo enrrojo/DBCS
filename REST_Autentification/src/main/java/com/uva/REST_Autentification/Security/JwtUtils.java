@@ -18,6 +18,9 @@ public class JwtUtils {
     @Value("${uva.app.jwtSecret}")
     private String jwtSecret;
 
+    //Valor key
+    private final String key = "rptgD1nyrogvvyHrOPyTYgHfNjF7ipCE";
+
     //Tiempo para que expire el jwt
     @Value("${uva.app.jwtExpirationMs}")
     private int jwtExpirationMs;
@@ -30,12 +33,12 @@ public class JwtUtils {
         claims.put("email",user.getEmail());
         claims.put("role",user.getRole());
 
-        //Creacion de jwt encriptado con HS512 y valores name, email y role del usuario
-        return Jwts.builder().setHeaderParam("alg","HS512").setHeaderParam("typ", "JWT")
+        //Creacion de jwt encriptado con HS256 y valores name, email y role del usuario
+        return Jwts.builder().setHeaderParam("alg","HS256").setHeaderParam("typ", "JWT").setHeaderParam("kid", key)
                 .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 }

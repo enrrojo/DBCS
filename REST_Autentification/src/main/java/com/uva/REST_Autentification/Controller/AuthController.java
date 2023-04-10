@@ -33,7 +33,7 @@ public class AuthController {
         try{
             // URL del endPoint que devuelve un usuario en base a su email
             // En nombre de host tambien puede ponerse el nombre del servicio, en este caso: REST
-            URL url = new URL("http://host.docker.internal:8080/users?email="+loginRequest.getEmail()); 
+            URL url = new URL("http://REST:8080/users?email="+loginRequest.getEmail()); 
             //Envio de la peticion HTTP con la operacion GET
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET");
