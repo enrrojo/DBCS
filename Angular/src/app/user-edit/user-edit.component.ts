@@ -23,7 +23,7 @@ export class UserEditComponent implements OnInit {
   listEnable = [true, false];
   selected: Role = Role.guest;
   listRole = Object.values(Role).filter(value => typeof value === 'string');
-  rolo = Role;
+  role = Role;
 
   constructor(private ruta: ActivatedRoute, private router: Router, private apiRestClient: ApiRestClientService, private datos: DataService) { }
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <span class="alert" *ngIf="mostrarMensaje">{{mensaje}}</span>
+    <div class="container-fluid">
+        <div class= "form-group col-sm-11"> </div>
+        <div class = "form-group col-sm-2">
+            <a>Name: {{name}}</a>
+        </div>
+        <div class = "form-group col-sm-3">
+            <a>Email: {{email}}</a>
+        </div>
+        <div class = "form-group col-sm-5">
+            <a>Role: {{role}}</a>
+        </div>
+        <form class="form-inline">
+            <fieldset class="form-group col-sm-12"></fieldset>
+            <fieldset class="form-group col-sm-3">
+                <a class="btn btn-primary" [routerLink]="['/book/availability']">Comprobar disponibilidad</a>
+            </fieldset>
+            <div class = "form-group col-sm-1">
+                <button type="button" (click)="showByPending()" class="btn btn-secondary">Pending</button>
+            </div>
+            <div class = "form-group col-sm-1">
+                <button type="button" (click)="showByConfirmed()" class="btn btn-secondary">Confirmed</button>
+            </div>
+            <div class = "form-group col-sm-1">
+                <button type="button" (click)="showByCancelled()" class="btn btn-secondary">Cancelled</button>
+            </div>
+        </form>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form class="form-inline">
+                    <fieldset class="form-group col-sm-12"></fieldset>
+                </form>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Price</th>
+                            <th>Units</th>
+                            <th>NumGuest</th>
+                            <th>Status</th>
+                            <th>DateIn</th>
+                            <th>DateOut</th>
+                            <th>Created_at</th>
+                            <th [hidden] = "guest" >GuestName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let reserva of reservas">
+                            <td><i>{{reserva.id}}</i></td>
+                            <td><i>{{reserva.price}}</i></td>
+                            <td><i>{{reserva.units}}</i></td>
+                            <td><i>{{reserva.numGuest}}</i></td>
+                            <td><i>{{reserva.status}}</i></td>
+                            <td><i>{{reserva.dateIn}}</i></td>
+                            <td><i>{{reserva.dateOut}}</i></td>
+                            <td><i>{{reserva.createdAt}}</i></td>
+                            <td [hidden] = "guest"><i>{{reserva.guestName}}</i></td>
+                            <td [hidden] = "guest ? true : false"><a class="btn btn-info" [routerLink]= "['/book', reserva.id, 'edit']" > Edit </a> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

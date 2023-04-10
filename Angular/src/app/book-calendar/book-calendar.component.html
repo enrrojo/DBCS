@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <span class="alert" *ngIf="mostrarMensaje">{{mensaje}}</span>
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group col-sm-3">
+          <label for="exampleFormControlInput1">Fecha Inicio</label>
+          <input type="date" class="form-control" id="exampleFormControlInput1"
+          required [(ngModel)]="fechaInicio" name="fechaInicio">
+        </div>
+        <div class="form-group col-sm-3">
+            <label for="exampleFormControlInput2">Fecha Final</label>
+            <input type="date" class="form-control" id="exampleFormControlInput2"
+            required [(ngModel)]="fechaFin" name="fechaFin">
+          </div>
+        <div class="form-group col-sm-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+      <fieldset class="form-group col-sm-12">
+        <a class="btn btn-primary" [routerLink]="['/book/new']">Pulsa aqui para añadir una reserva</a>
+    </fieldset>
+      <div class="form-group col-sm-3">
+        <label for="exampleFormControlSelect2">Lista de fechas y habitaciones disponibles</label>
+      </div>
+      <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Fecha</th>
+                <th>Numero de habitaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let habitacion of fechaHabitaciones" >
+                <td><i>{{habitacion.key}}</i></td>
+                <td><i>{{habitacion.value}}</i></td>
+            </tr>
+        </tbody>
+    </table>
+</body>

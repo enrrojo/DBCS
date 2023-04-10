@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { User } from '../model/app.model';
+import { Reserva, User } from '../model/app.model';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -10,7 +10,17 @@ import { map } from 'rxjs/operators';
 })
 export class ApiRestClientService {
 
-  private static readonly BASE_URI = 'http://localhost:8080/users/';
+  /**
+   * Para implementar la api gateway serian las siguientes URI:
+   * 
+   *  private static readonly API_USERS_URI = 'http://localhost:8000/api/users/';
+   * private static readonly API_AUTH_URI = 'http://localhost:8000/api/auth/';
+   * private static readonly API_BOOK_URI = 'http://localhost:8000/api/book/';
+   */
+
+  private static readonly API_USERS_URI = 'http://localhost:8080/users/';
+  private static readonly API_AUTH_URI = 'http://localhost:8081/users/';
+  private static readonly API_BOOK_URI = 'http://localhost:8082/book/';
 
   constructor(private http: HttpClient) { } // inyectamos el servicio HttpClient
 
@@ -19,7 +29,7 @@ export class ApiRestClientService {
    * @returns lista de users
    */
   getAllUsers(): Observable<HttpResponse<User[]>> {
-    let url = ApiRestClientService.BASE_URI;
+    let url = ApiRestClientService.API_USERS_URI;
     return this.http.get<User[]>(url, { observe: 'response' }); // Retorna el cuerpo de la respuesta
   }
 
@@ -29,7 +39,7 @@ export class ApiRestClientService {
    * @returns usuer
    */
   getUser(id: String): Observable<HttpResponse<User>> {
-    let url = ApiRestClientService.BASE_URI + id;
+    let url = ApiRestClientService.API_USERS_URI + id;
     return this.http.get<User>(url, { observe: 'response' });
   }
 
@@ -39,7 +49,7 @@ export class ApiRestClientService {
    * @returns respuesta del servidor
    */
   addUser(user: User): Observable<HttpResponse<any>> {
-    let url = ApiRestClientService.BASE_URI;
+    let url = ApiRestClientService.API_USERS_URI;
     return this.http.post(url, user, { observe: 'response', responseType: 'text'});
   }
 
@@ -50,7 +60,7 @@ export class ApiRestClientService {
    * @returns respuesta del servidor
    */
   modifyUser(id: String, user: User): Observable<HttpResponse<any>> {
-    let url = ApiRestClientService.BASE_URI + id;
+    let url = ApiRestClientService.API_USERS_URI + id;
     return this.http.put(url, user, { observe: 'response', responseType: 'text'});
   }
 
@@ -60,7 +70,7 @@ export class ApiRestClientService {
    * @returns respuesta del servidor
    */
   deleteUser(id: String): Observable<HttpResponse<any>> {
-    let url = ApiRestClientService.BASE_URI + id;
+    let url = ApiRestClientService.API_USERS_URI + id;
     return this.http.delete(url, { observe: 'response', responseType: 'text'});
   }
 
@@ -70,7 +80,7 @@ export class ApiRestClientService {
    * @returns lista de usuarios
    */
   getUserEnable(enable: boolean): Observable<HttpResponse<User[]>> {
-    let url = ApiRestClientService.BASE_URI;
+    let url = ApiRestClientService.API_USERS_URI;
     return this.http.get<User[]>(url, { params: {enable}, observe: 'response' });
   }
 
@@ -80,7 +90,7 @@ export class ApiRestClientService {
    * @returns respuesta del servidor
    */
   makeUserEnabled(user_id: string[]): Observable<HttpResponse<any>> {
-    let url = ApiRestClientService.BASE_URI + "enable";
+    let url = ApiRestClientService.API_USERS_URI + "enable";
     return this.http.put(url, null, { params: {user_id}, observe: 'response', responseType: 'text' });
   }
 
@@ -90,7 +100,7 @@ export class ApiRestClientService {
    * @returns respuesta del servidor
    */
   makeUserDisabled(user_id: string[]): Observable<HttpResponse<any>> {
-    let url = ApiRestClientService.BASE_URI + "disable";
+    let url = ApiRestClientService.API_USERS_URI + "disable";
     return this.http.put(url, null, { params: {user_id}, observe: 'response', responseType: 'text' });
   }
 
@@ -100,7 +110,7 @@ export class ApiRestClientService {
    * @returns usuario
    */
   getUserByEmail(email: string): Observable<HttpResponse<User>> {
-    let url = ApiRestClientService.BASE_URI;
+    let url = ApiRestClientService.API_USERS_URI;
     return this.http.get<User>(url, { params: {email}, observe: 'response' });
   }
 
@@ -111,9 +121,37 @@ export class ApiRestClientService {
    * @returns token JWT
    */
   loginUser(email: string, password: string): Observable<any> {
-    let url = 'http://localhost:8081/users/login';
+    let url = ApiRestClientService.API_AUTH_URI + "login";
     let body = {email, password};
 
     return this.http.post(url, body, { headers: {'Content-Type': 'application/json'}, observe: 'response', responseType: 'text'});
+  }
+
+  // Todas las peticiones de /book mandan el token, con RequestReceptor añade a las peticiones la cabecera 'jwt'
+  
+  // manda las fechas como parametro en la query
+  getBooksAvailability(fechas: string[]): Observable<HttpResponse<Map<string,number>>> {
+    let url = ApiRestClientService.API_BOOK_URI + "availability";
+    return this.http.get<Map<string,number>>(url, { params: {fechas}, observe: 'response' }); // Retorna el cuerpo de la respuesta
+  }
+
+  getAllBooks(): Observable<HttpResponse<Map<string,Reserva[]>>> {
+    let url = ApiRestClientService.API_BOOK_URI;
+    return this.http.get<Map<string,Reserva[]>>(url, { observe: 'response' }); // Retorna el cuerpo de la respuesta
+  }
+
+  getBook(id: String): Observable<HttpResponse<Reserva>> {
+    let url = ApiRestClientService.API_BOOK_URI + id;
+    return this.http.get<Reserva>(url, { observe: 'response' }); // Retorna el cuerpo de la respuesta
+  }
+
+  addBook(reserva: Reserva): Observable<HttpResponse<any>> {
+    let url = ApiRestClientService.API_BOOK_URI;
+    return this.http.post(url, reserva, { observe: 'response', responseType: 'text'});
+  }
+
+  modifyBook(id: String, reserva: Reserva): Observable<HttpResponse<any>> {
+    let url = ApiRestClientService.API_BOOK_URI + id;
+    return this.http.put(url, reserva, { observe: 'response', responseType: 'text'});
   }
 }

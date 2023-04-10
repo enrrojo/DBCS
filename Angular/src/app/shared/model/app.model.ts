@@ -15,3 +15,23 @@ export enum Role {
     host,
     guest
 }
+
+export interface Reserva{
+    id: Number,
+    guestName: String,
+    guestEmail: String,
+    price: Number,
+    units: Number,
+    numGuest: Number,
+    status: Status,
+    dateIn: Date,
+    dateOut: Date,
+    createdAt: Date,
+    updatedAt: Date
+}
+
+export enum Status{
+    PENDING,
+    CONFIRMED,
+    CANCELLED
+}

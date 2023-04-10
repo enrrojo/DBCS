@@ -50,7 +50,7 @@ export class UserLoginComponent implements OnInit {
             // Establece los datos del usuario decodificados, como JSON en string
             this.autenticate.setUser(JSON.stringify(jwt_decode(resp.body)));
 
-            this.router.navigate(['users']);
+            this.router.navigate(['book']);
 
           }
         },
